@@ -35,3 +35,27 @@ jobs:
         run: |
           pytest tests/test_model_api.py
           pytest tests/test_preprocessing.py
+
+  publish-to-ghcr:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Проверка кода
+        uses: actions/checkout@v4
+
+      - name: Вход в GCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Сборка и публикация Docker-образа
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/your-image-name:latest
+            ghcr.io/${{ github.repository_owner }}/your-image-name:${{ github.sha }}
