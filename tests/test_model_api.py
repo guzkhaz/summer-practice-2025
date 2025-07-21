@@ -17,6 +17,7 @@ def setup_model_for_tests():
 
     if not os.path.exists(model_path):
         os.makedirs(model_dir, exist_ok=True)
+        print(f"Creating dummy model at {model_path} for testing...")
         iris = load_iris()
         X = pd.DataFrame(iris.data, columns=[
             'sepal_length', 'sepal_width', 'petal_length', 'petal_width'
@@ -24,6 +25,7 @@ def setup_model_for_tests():
         dummy_model = LogisticRegression(max_iter=200)
         dummy_model.fit(X, iris.target)
         joblib.dump(dummy_model, model_path)
+        print("Dummy model setup complete.")
 
 
 @pytest.fixture
@@ -67,7 +69,7 @@ def test_predict_endpoint_missing_feature(client):
 
 def test_predict_endpoint_invalid_data_type(client):
     test_data = {
-        "sepal_length": "invalid",  # Invalid type
+        "sepal_length": "invalid",  
         "sepal_width": 3.5,
         "petal_length": 1.4,
         "petal_width": 0.2
