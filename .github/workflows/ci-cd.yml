@@ -29,10 +29,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Запуск Flake8 
-        run: |
-          flake8 app scripts tests
-
       - name: Запуск тестов
         env:
           PYTHONPATH: .

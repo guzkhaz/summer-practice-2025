@@ -25,8 +25,8 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        load_model()  
-
+        load_model()
+        
         input_data = request.get_json()
         expected_features = [
             'sepal_length', 'sepal_width', 'petal_length', 'petal_width'
