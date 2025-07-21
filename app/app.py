@@ -13,7 +13,7 @@ def load_model():
     global model
     if model is None:
         if not os.path.exists(MODEL_PATH):
-            raise FileNotFoundError(f"Файл не найден: {MODEL_PATH}")
+            raise FileNotFoundError(f"Model file not found: {MODEL_PATH}")
         model = joblib.load(MODEL_PATH)
 
 
@@ -25,8 +25,8 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        load_model()
-        
+        load_model()  
+
         input_data = request.get_json()
         expected_features = [
             'sepal_length', 'sepal_width', 'petal_length', 'petal_width'
@@ -35,7 +35,7 @@ def predict():
         for feature in expected_features:
             if feature not in input_data:
                 return jsonify({
-                    "error": f"Отсутствует ожидаемая функция: {feature}"
+                    "error": f"Missing expected feature: {feature}"
                 }), 400
 
         input_df = pd.DataFrame([{
@@ -59,5 +59,5 @@ def predict():
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         return jsonify({
-            "error": f"Произошла непредвиденная ошибка: {str(e)}"
+            "error": f"An unexpected error occurred: {str(e)}"
         }), 500
