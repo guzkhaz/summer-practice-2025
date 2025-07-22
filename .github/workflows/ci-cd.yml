@@ -57,3 +57,23 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/guzkhaz/iris-api:latest
+
+  push-to-yandex:
+    needs: publish-to-ghcr
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Login to Yandex Cloud Container Registry
+        id: login-cr
+        uses: yc-actions/yc-cr-login@v3
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
+      - name: Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: crppjfi80a6vmdl86rpk
+          CR_REPOSITORY: yc-cr-github-action
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
