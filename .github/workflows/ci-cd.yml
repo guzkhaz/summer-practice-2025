@@ -91,6 +91,6 @@ jobs:
           revision-memory: 512Mb
           revision-core-fraction: 100
           revision-concurrency: 8
-          revision-image-url: cr.yandex/crppjfi80a6vmdl86rpk/summer-practice-2025:${{ github.sha }}
+          revision-image-url: cr.yandex/crpek9vi58d1lmm663n1/summer-practice-2025:${{ github.sha }}
           revision-execution-timeout: 10
       
